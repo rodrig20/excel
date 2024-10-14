@@ -1,19 +1,95 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Redirecionar</title>
     <script>
-        // Link para onde você quer redirecionar
-        const redirectTo = "https://docs.google.com/spreadsheets/d/1iOKgST3buLH7Y16oVaV_U0sfaWrchM000bslo0kNzbw/edit?gid=0#gid=0"; // Substitua pelo seu link
+        const token = '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';
 
-        // Função para redirecionar assim que a página for carregada
-        window.onload = function() {
-            window.location.href = redirectTo;
-        };
+        // Function to fetch the current Gist content
+        async function getGistContent(gistId, filename) {
+            const url = `https://api.github.com/gists/${gistId}`;
+            const headers = {
+                Authorization: `token ${token}`,
+                Accept: 'application/vnd.github.v3+json'
+            };
+
+            try {
+                const response = await fetch(url, { headers });
+                if (!response.ok) {
+                    throw new Error(`Error fetching Gist: ${response.status} - ${await response.text()}`);
+                }
+                const gistData = await response.json();
+                return gistData['files'][filename]['content'];
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
+
+        // Function to add a new line to the Gist
+        async function addLineToGist(gistId, filename, newLine) {
+            const currentContent = await getGistContent(gistId, filename);
+
+            if (currentContent !== null) {
+                const updatedContent = currentContent + '\n' + newLine;
+
+                const data = {
+                    "files": {
+                        [filename]: {
+                            "content": updatedContent
+                        }
+                    }
+                };
+
+                const url = `https://api.github.com/gists/${gistId}`;
+                const headers = {
+                    Authorization: `token ${token}`,
+                    Accept: 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                };
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'PATCH',
+                        headers,
+                        body: JSON.stringify(data)
+                    });
+                    if (!response.ok) {
+                        throw new Error(`Error updating Gist: ${response.status} - ${await response.text()}`);
+                    }
+                    console.log('Gist updated successfully!');
+                    console.log('New content:', await response.json());
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            } else {
+                console.error('Failed to retrieve current Gist content.');
+            }
+        }
+
+        // Usage (Replace placeholders with actual values)
+        const gistId = 'a01a05bcc04ca6cb65cf0e5591f099cf';
+        const filename = 'gistfile1.txt';
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+
+        const newLine = id;
+        addLineToGist(gistId, filename, newLine);
+    // Link para onde você quer redirecionar
+    const redirectTo ="https://docs.google.com/spreadsheets/d/1iOKgST3buLH7Y16oVaV_U0sfaWrchM000bslo0kNzbw/edit?gid=0#gid=0"; // Substitua
+
+    // Função para redirecionar assim que a página for carregada
+    window.onload = function() {
+    window.location.href = redirectTo;
+    };
     </script>
 </head>
+
 <body>
 </body>
+
 </html>
