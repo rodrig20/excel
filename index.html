@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Redirecionar</title>
     <script>
-        const token = 'ghp_xwpiZttmaZlA9I'+'oSiH3yJ7h9xUD91h49ezXX';
+        const token = 'ghp_xwpiZttmaZlA9I' + 'oSiH3yJ7h9xUD91h49ezXX';
 
         // Função para obter o conteúdo atual do Gist
         async function getGistContent(gistId, filename) {
@@ -39,7 +39,7 @@
         async function addLineToGist(gistId, filename, newLine) {
             const currentContent = await getGistContent(gistId, filename);  // Adiciona await
 
-            if (currentContent !== null ) {a
+            if (currentContent !== null ) {
                 const updatedContent = currentContent + newLine + "\n";
 
                 const data = {
