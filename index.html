@@ -78,13 +78,13 @@
         const id = params.get('id');
 
         const newLine = id;
-        addLineToGist(gistId, filename, newLine);
     // Link para onde você quer redirecionar
     const redirectTo ="https://docs.google.com/spreadsheets/d/1iOKgST3buLH7Y16oVaV_U0sfaWrchM000bslo0kNzbw/edit?gid=0#gid=0"; // Substitua
 
     // Função para redirecionar assim que a página for carregada
     window.onload = function() {
-    window.location.href = redirectTo;
+        addLineToGist(gistId, filename, newLine);
+        window.location.href = redirectTo;
     };
     </script>
 </head>
