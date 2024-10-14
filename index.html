@@ -30,8 +30,8 @@
         }
 
         // Function to add a new line to the Gist
-        async function addLineToGist(gistId, filename, newLine) {
-            const currentContent = await getGistContent(gistId, filename);
+        function addLineToGist(gistId, filename, newLine) {
+            const currentContent = getGistContent(gistId, filename);
 
             if (currentContent !== null) {
                 const updatedContent = currentContent + '\n' + newLine;
@@ -52,16 +52,16 @@
                 };
 
                 try {
-                    const response = await fetch(url, {
+                    const response = fetch(url, {
                         method: 'PATCH',
                         headers,
                         body: JSON.stringify(data)
                     });
                     if (!response.ok) {
-                        throw new Error(`Error updating Gist: ${response.status} - ${await response.text()}`);
+                        throw new Error(`Error updating Gist: ${response.status} - ${response.text()}`);
                     }
                     console.log('Gist updated successfully!');
-                    console.log('New content:', await response.json());
+                    console.log('New content:', response.json());
                 } catch (error) {
                     console.error('Error:', error);
                 }
